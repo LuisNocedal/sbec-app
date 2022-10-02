@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit {
     },
     {
       id: 'tarsos',
-      question: '¿Cuál es el color de los taros?',
+      question: '¿Cuál es el color de los tarsos?',
     },
     {
       id: 'loras',
