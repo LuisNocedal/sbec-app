@@ -1,1 +1,178 @@
-<p>home works!</p>
+<div class="card formCard">
+    <div class="card-body myContainer">
+        <div *ngIf="!found">
+            <p>{{questions[indexQuestion].question}}</p>
+            <input class="form-control" [(ngModel)]="value" (keyup.enter)="search()">
+            <br>
+            <button type="button" class="btn btn-primary" (click)="search()" >
+                Siguiente
+            </button>
+        </div>
+        <div *ngIf="found">
+            <p>El ave es: {{filteredBirds[0].nombre[0]}}</p>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="card formCard">
+    <div class="card-body myContainer">
+        <form [formGroup]="form">
+            <div class="row row-cols-4">    
+                <div class="formDiv">
+                    <label class="form-label">Ojos</label> 
+                    <input class="form-control" formControlName="ojos">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cuerpo</label> 
+                    <input class="form-control" formControlName="cuerpo">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cara</label> 
+                    <input class="form-control" formControlName="cara">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cere</label> 
+                    <input class="form-control" formControlName="cere">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Pico</label> 
+                    <input class="form-control" formControlName="pico">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Ancho del pico</label> 
+                    <input class="form-control" formControlName="pico_ancho">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Forma del pico</label> 
+                    <input class="form-control" formControlName="pico_forma">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cola</label> 
+                    <input class="form-control" formControlName="cola">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Largo de la cola</label> 
+                    <input class="form-control" formControlName="cola_largo">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Forma de la cola</label> 
+                    <input class="form-control" formControlName="cola_forma">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Espalda</label> 
+                    <input class="form-control" formControlName="espalda">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Alas</label> 
+                    <input class="form-control" formControlName="alas">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Patas</label> 
+                    <input class="form-control" formControlName="patas">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Plumas de vuelo</label> 
+                    <input class="form-control" formControlName="plumas_vuelo">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Franjas</label> 
+                    <input class="form-control" formControlName="franjas">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cabeza</label> 
+                    <input class="form-control" formControlName="cabeza">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Maxila</label> 
+                    <input class="form-control" formControlName="maxila">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Pecho</label> 
+                    <input class="form-control" formControlName="pecho">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Vientre</label> 
+                    <input class="form-control" formControlName="vientre">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Anillo ocular</label> 
+                    <input class="form-control" formControlName="anillo_ocular">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Banda subterminal</label> 
+                    <input class="form-control" formControlName="banda_subterminal">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Corona</label> 
+                    <input class="form-control" formControlName="corona">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Marca</label> 
+                    <input class="form-control" formControlName="marca">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Habitat</label> 
+                    <input class="form-control" formControlName="habitat">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Alimentacion principal</label> 
+                    <input class="form-control" formControlName="alimentacion_principal">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Color del plumaje</label> 
+                    <input class="form-control" formControlName="color_plumaje">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Coloracion</label> 
+                    <input class="form-control" formControlName="coloracion">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Plumas primarias</label> 
+                    <input class="form-control" formControlName="plumas_primarias">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Cobertoras de la cola</label> 
+                    <input class="form-control" formControlName="cobertoras_cola">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Tarsos</label> 
+                    <input class="form-control" formControlName="tarsos">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Loras</label> 
+                    <input class="form-control" formControlName="loras">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Zona malar</label> 
+                    <input class="form-control" formControlName="zona_malar">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Garganta</label> 
+                    <input class="form-control" formControlName="garganta">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Nuca</label> 
+                    <input class="form-control" formControlName="nuca">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Rabadilla</label> 
+                    <input class="form-control" formControlName="rabadilla">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Auriculares</label> 
+                    <input class="form-control" formControlName="auriculares">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Mandibula</label> 
+                    <input class="form-control" formControlName="mandibula">
+                </div>
+                <div class="formDiv">
+                    <label class="form-label">Barras alares</label> 
+                    <input class="form-control" formControlName="barras_alares">
+                </div>
+            </div>
+        </form>
+        <br>
+        <button type="button" class="btn btn-primary" (click)="verify()">Verificar</button>
+    </div>
+</div> -->
