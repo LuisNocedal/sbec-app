@@ -9,7 +9,11 @@
             </button>
         </div>
         <div *ngIf="found">
-            <p>El ave es: {{filteredBirds[0].nombre[0]}}</p>
+            <p><span style="font-weight: bold;">El ave es:</span> {{filteredBirds[0].nombre[0]}}</p>
+            <p style="font-weight: bold;">Las propiedades son: </p>
+            <div *ngFor="let value of values">
+                <p>{{value.property}} - {{value.value}}</p>
+            </div>
         </div>
     </div>
 </div>

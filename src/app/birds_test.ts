@@ -10,7 +10,7 @@ export const birds: Array<{[key:string]: Array<any>}> = [
     {
         nombre: ['Ave 5'],
         ojos: ['1234'],
-        cuerpo: [''],
+        cuerpo: [['rojo', 'blanco'], ['rojo', 'cafe']],//((cafe OR blanco) AND rojo)  
         cara: [''],
         cere: [''],
         pico: ['']

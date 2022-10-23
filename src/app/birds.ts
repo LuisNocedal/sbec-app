@@ -26,7 +26,7 @@ export const birds = [
         marca: ['patagial oscura'],
         habitat: ['areas abiertas','bosques','cableado electrico'],
         alimentacion_principal: ['roedores','aves','reptiles','anfibios','carroña'],
-        color_plumaje: ['cafe','blanco',['rojo']],//((cafe OR blanco) AND rojo)  
+        color_plumaje: [['rojo', 'blanco'], ['rojo', 'cafe']],//((cafe OR blanco) AND rojo)  
         coloracion: [''],
         plumas_primarias: [''],
         cobertoras_cola: [''],
@@ -723,7 +723,7 @@ export const birds = [
         marca: ['patagial obscura'],
         habitat: ['areas abiertas','bosques','cableado electrico'],
         alimentacion_principal: ['roedores','aves','reptiles','anfibios','carroña'],
-        color_plumaje: ['cafe','blanco',['rojo']],//((cafe OR blanco) AND rojo)  
+        color_plumaje: [['rojo', 'cafe'], ['rojo', 'blanco']],//((cafe OR blanco) AND rojo)  
         coloracion: [''],
         plumas_primarias: [''],
         cobertoras_cola: [''],

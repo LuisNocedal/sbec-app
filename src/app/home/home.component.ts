@@ -10,8 +10,6 @@ import Swal from 'sweetalert2'
 })
 export class HomeComponent implements OnInit {
 
-  // form: FormGroup;
-
   indexQuestion: number = 0;
 
   questions = [
@@ -100,6 +98,10 @@ export class HomeComponent implements OnInit {
       question: '¿De qué color es la corona?',
     },
     {
+      id: 'marca',
+      question: '¿Tiene alguna marca?',
+    },
+    {
       id: 'habitat',
       question: '¿Cuál es su habitat?',
     },
@@ -167,60 +169,39 @@ export class HomeComponent implements OnInit {
 
   found: boolean = false;
 
+  values: Array<any> = [];
+
   constructor(private fb: FormBuilder) {
 
-    // this.form = this.fb.group({
-    //     ojos: ['negro y azul'],
-    //     cuerpo: [''],
-    //     cara: [''],
-    //     cere: [''],
-    //     pico: [''],
-    //     pico_ancho: [''],
-    //     pico_forma: [''],
-    //     cola: [''],
-    //     cola_largo: [''],
-    //     cola_forma: [''],
-    //     espalda: [''],
-    //     alas: [''],
-    //     patas: [''],
-    //     plumas_vuelo: [''],
-    //     franjas: [''],
-    //     cabeza: [''],
-    //     maxila: [''],
-    //     pecho: [''],
-    //     vientre: [''],
-    //     anillo_ocular: [''],
-    //     banda_subterminal: [''],
-    //     corona: [''],
-    //     marca: [''],
-    //     habitat: [''],
-    //     alimentacion_principal: [''],
-    //     color_plumaje: [''],
-    //     coloracion: [''],
-    //     plumas_primarias: [''],
-    //     cobertoras_cola: [''],
-    //     tarsos: [''],
-    //     loras: [''],
-    //     zona_malar: [''],
-    //     garganta: [''],
-    //     nuca: [''],
-    //     rabadilla: [''],
-    //     auriculares: [''],
-    //     mandibula: [''],
-    //     barras_alares: [''],
-    // });
-
-    // const strTest = 'Morados y negros, blancos';
-    // const orRes = strTest.split(',');
-
-    // const andRes = orRes.map(res => {
-    //   const res1 = res.split(' y ');
-    //   return (res1.length > 1)? res1 : res1[0].trim();
-    // })
-
-    // console.log(andRes);
-
     this.filteredBirds = birds;
+
+
+    // const datos = [
+    //   {nombre: 'ave1', color: 'rojo'},
+    //   {nombre: 'ave2', color: 'verde'},
+    //   {nombre: 'ave3', color: 'blanco'},
+    //   {nombre: 'ave4', color: 'azul'},
+    //   {nombre: 'ave5', color: 'rojo'},
+    //   {nombre: 'ave6', color: 'rojo'},
+    //   {nombre: 'ave7', color: 'negro'},
+    //   {nombre: 'ave8', color: 'rojo'},
+    // ];
+
+    // const filtered = datos.filter((ave: any) => {
+    //   return ave.color === 'amarillo';
+    // });
+    // console.log(filtered)
+
+
+    //  const ave: any = {
+    //   name: 'ave1',
+    //   color: 'rojo',
+    //  }
+
+    //  const prop = 'name'
+
+    //  console.log(ave.caract?.test)
+
   }
 
   ngOnInit(): void {
@@ -228,26 +209,25 @@ export class HomeComponent implements OnInit {
 
   search() {
     
-    // Swal.fire('Any fool can use a computer')
-
-    // const backups = [...this.filteredBirds];
-
-    console.log('Respuesta - ' + this.questions[this.indexQuestion].id );
     const formatedValues = this.getAnds(this.value);
-    console.log(formatedValues);
-    console.log('--------------')
-    console.log('Birds - ' + this.questions[this.indexQuestion].id )
+    console.log('User value',formatedValues)
     this.filteredBirds = this.getBirdsMatchs(formatedValues);
-    console.log('filteredBirds', this.filteredBirds);
-    this.value = '';
-
+    console.log('filteredBirds', this.filteredBirds)
+    
     if(this.filteredBirds.length === 0) { 
       Swal.fire({
         title: 'No encontramos ninguna coincidencia',
       });
-      // this.filteredBirds = [...backups];
       return;
     }
+    
+    if(this.value != '') {
+      this.values.push({
+        property: this.questions[this.indexQuestion].id,
+        value: this.value
+      });
+    }
+    this.value = '';
 
     this.indexQuestion++;
 
@@ -257,43 +237,40 @@ export class HomeComponent implements OnInit {
 
     if(this.indexQuestion === this.questions.length - 1 && this.filteredBirds.length === 1) {
       this.found = true;
+      console.log(this.values);
       return;
-      // Swal.fire({
-      //   icon: 'success',
-      //   title: 'Encontramos tu ave!',
-      //   text: 'Su nombre es ' + this.filteredBirds[0].nombre[0],
-      // })
     }
-
-    console.log(this.questions.length)
-    console.log('indexQuestion', this.indexQuestion);
-
-
-    // console.log('Valid question',this.isNecesaryQuestion());
-
   }
 
   getBirdsMatchs(values: Array<string>) {
     return this.filteredBirds.filter(bird => {
       let match = false;
+      // console.log('Propiedad', this.questions[this.indexQuestion].id);
       const birdValues = bird[this.questions[this.indexQuestion].id];
-      console.log(birdValues)
+      // console.log('birdValues',birdValues);
       if(values.length > 1 ) {
+        // match = true;
+        let coincidences = 0;
         birdValues.forEach((birdValue: any) => {
+          // console.log(birdValue)
           if(typeof birdValue === 'object') {
+            // match = true;
+            console.log('birdValue object',birdValue)
             birdValue.forEach((birdValueAnd: any) => {
-              if(values.includes(birdValueAnd.toLocaleLowerCase())) {
-                match = true;
+              console.log('birdValueAnd',birdValueAnd)
+              if(values.includes(birdValueAnd) ) {
+                coincidences ++;
+                // match = false;
               }
+              if(values.length === coincidences) match = true;
             })
           }
         });
       } else {
-        if(birdValues.includes(values[0].toLocaleLowerCase())) {
+        if(birdValues.includes(values[0])) {
           match = true;
         }
       }
-      // console.log(match)
       return match;
     });
   }
@@ -305,38 +282,11 @@ export class HomeComponent implements OnInit {
         theresValues = true;
       }
     });
-    console.log('question', this.questions[this.indexQuestion]?.id)
-    console.log('isNecesaryQuestion', theresValues);
     return theresValues;
   }
 
-  // verify(){
-  //   const features = this.form.value;
-  //   const featuresKeys = Object.keys(features);
-
-  //   let featuresMaped: any = {};
-    
-  //   for(const key of featuresKeys){
-  //     if(features[key] !== ''){
-  //       featuresMaped[key] = this.getAndsOrs(features[key]);
-  //     }
-  //   }
-
-  //   for(const bird of birds) {
-  //     const featuresMapedKeys = Object.keys(featuresMaped);
-  //     for(const key of featuresMapedKeys){
-  //       console.log(bird[key]);
-  //       console.log(featuresMaped[key]);
-  //       featuresMaped[key].forEach((feature: any) => {
-  //         console.log(bird[key].findIndex((birdFeature: any) => { return birdFeature === feature }))
-  //       });
-  //     }
-  //   }
-
-  // }
-
   getAnds(str: string ) {
-    const ands = str.split(' y ');
+    const ands = str.toLocaleLowerCase().split(' y ');
     return ands;
   }
 
