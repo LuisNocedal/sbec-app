@@ -1,4 +1,4 @@
-<div class="card formCard">
+<div class="card formCard" *ngIf="loaded && !addingBird">
     <div class="card-body myContainer">
         <div *ngIf="!found">
             <p>{{questions[indexQuestion].question}}</p>
@@ -12,13 +12,13 @@
             <p><span style="font-weight: bold;">El ave es:</span> {{filteredBirds[0].nombre[0]}}</p>
             <p style="font-weight: bold;">Las propiedades son: </p>
             <div *ngFor="let value of values">
-                <p>{{value.property}} - {{value.value}}</p>
+                <p>{{value.property}} - {{(value.value == "")? "N/A": value.value}}</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- <div class="card formCard">
+<div class="card formCard" *ngIf="addingBird">
     <div class="card-body myContainer">
         <form [formGroup]="form">
             <div class="row row-cols-4">    
@@ -174,9 +174,18 @@
                     <label class="form-label">Barras alares</label> 
                     <input class="form-control" formControlName="barras_alares">
                 </div>
+                
+            </div>
+            <br>
+            <div class="formDiv">
+                <label class="form-label">Nombre</label> 
+                <input class="form-control" formControlName="nombre">
             </div>
         </form>
         <br>
-        <button type="button" class="btn btn-primary" (click)="verify()">Verificar</button>
+        <div class="alert alert-danger" role="alert" *ngIf="nameMissed">
+            Tienes que ingresar un nombre
+        </div>
+        <button type="button" class="btn btn-primary" (click)="saveBird()">Guardar</button>
     </div>
-</div> -->
+</div>

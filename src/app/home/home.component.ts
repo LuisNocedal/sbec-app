@@ -1,14 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { birds } from '../birds';
+// import birds from '../birds_test.json'
+
+// import { birds } from '../birds';
+interface Value {
+  property: string,
+  value: string
+}
+
 import Swal from 'sweetalert2'
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [ HomeService ]
 })
 export class HomeComponent implements OnInit {
+
+  form: FormGroup;
 
   indexQuestion: number = 0;
 
@@ -163,19 +174,24 @@ export class HomeComponent implements OnInit {
     }
   ]
 
+  birds: Array<any> = [];
   filteredBirds: Array<any> = [];
 
   value: string = '';
 
   found: boolean = false;
 
-  values: Array<any> = [];
+  values: Array<Value> = [];
 
-  constructor(private fb: FormBuilder) {
+  loaded: boolean = false;
 
-    this.filteredBirds = birds;
+  addingBird: boolean = false;
 
+  nameMissed: boolean = false;
 
+  constructor(private fb: FormBuilder, private _homeService: HomeService) {
+
+    // this.filteredBirds = [];
     // const datos = [
     //   {nombre: 'ave1', color: 'rojo'},
     //   {nombre: 'ave2', color: 'verde'},
@@ -202,31 +218,98 @@ export class HomeComponent implements OnInit {
 
     //  console.log(ave.caract?.test)
 
+    this.form = this.fb.group({
+        nombre : ['', Validators.required],
+        ojos: [''],
+        cuerpo: [''],
+        cara: [''],
+        cere: [''],
+        pico: [''],
+        pico_ancho: [''],
+        pico_forma: [''],
+        cola: [''],
+        cola_largo: [''],
+        cola_forma: [''],
+        espalda: [''],
+        alas: [''],
+        patas: [''],
+        plumas_vuelo: [''],
+        franjas: [''],
+        cabeza: [''],
+        maxila: [''],
+        pecho: [''],
+        vientre: [''],
+        anillo_ocular: [''],
+        banda_subterminal: [''],
+        corona: [''],
+        marca: [''],
+        habitat: [''],
+        alimentacion_principal: [''],
+        color_plumaje: [''],
+        coloracion: [''],
+        plumas_primarias: [''],
+        cobertoras_cola: [''],
+        tarsos: [''],
+        loras: [''],
+        zona_malar: [''],
+        garganta: [''],
+        nuca: [''],
+        rabadilla: [''],
+        auriculares: [''],
+        mandibula: [''],
+        barras_alares: [''],
+    });
+
+    this.getBirds();
+
   }
 
   ngOnInit(): void {
   }
 
+  getBirds() {
+
+    this._homeService.getBirds().subscribe((res)=> {
+      console.log(res);
+      this.loaded = true;
+      this.birds = res.birds;
+      this.filteredBirds = res.birds;
+    },(error) => {
+      console.log(error);
+    })
+  }
+
+  fillForm() {
+    console.log(this.values);
+    this.values.forEach(({ value, property }) => {
+      this.form.controls[property].setValue(value)
+    });
+
+  }
+
   search() {
-    
     const formatedValues = this.getAnds(this.value);
     console.log('User value',formatedValues)
     this.filteredBirds = this.getBirdsMatchs(formatedValues);
     console.log('filteredBirds', this.filteredBirds)
     
+  // if(this.value != '') {
+    this.values.push({
+      property: this.questions[this.indexQuestion].id,
+      value: this.value
+    });
+  // }
+
     if(this.filteredBirds.length === 0) { 
-      Swal.fire({
-        title: 'No encontramos ninguna coincidencia',
-      });
+      // Swal.fire({
+      //   title: 'No encontramos ninguna coincidencia',
+      //   text: 'Ingresa los datos del ave'
+      // });
+      this.addingBird = true;
+      this.fillForm();
       return;
     }
     
-    if(this.value != '') {
-      this.values.push({
-        property: this.questions[this.indexQuestion].id,
-        value: this.value
-      });
-    }
     this.value = '';
 
     this.indexQuestion++;
@@ -288,6 +371,66 @@ export class HomeComponent implements OnInit {
   getAnds(str: string ) {
     const ands = str.toLocaleLowerCase().split(' y ');
     return ands;
+  }
+
+  saveBird() {
+
+    if(this.form.invalid) {
+      this.nameMissed = true;
+      return;
+    }
+
+    let newBirds: Array<any>; 
+
+    const birdForm = this.form.value;
+    let birdFormated: any = {};
+
+    for (const [key, value] of Object.entries<string>(birdForm)) {
+      // console.log(`${key}: ${value}`);
+      let formatedValue: any = [value];
+      if(key !== 'nombre') {
+        formatedValue = (this.getAnds(value).length > 1)? [ this.getAnds(value) ] : this.getAnds(value);
+      }
+      birdFormated[key] = formatedValue;
+    }
+
+    // console.log('birdFormated', birdFormated)
+
+    // console.log('birdForm', birdForm);
+    // console.log('aves',this.birds)
+
+    const birdFound = this.birds.find((bird) => {
+      return bird.nombre[0] === birdForm.nombre;
+    });
+
+    // console.log('birdFound',birdFound);
+
+    if(birdFound) {
+      // console.log('if birdFound');
+      newBirds = this.birds.map((bird) => {
+        if(bird.nombre[0] === birdForm.nombre) return birdFormated;
+        return bird;
+      });
+    } else {
+      newBirds = [...this.birds, birdFormated];
+    }
+
+
+    const data = {
+      birds: newBirds
+    }
+
+    this._homeService.setBirds(data).subscribe((res) => {
+      console.log(res);
+      window.location.reload();
+      // this.addingBird = false;
+      // this.getBirds();
+      // this.value = "";
+      // this.values = [];
+    }, error => {
+
+    }) 
+
   }
 
 }
