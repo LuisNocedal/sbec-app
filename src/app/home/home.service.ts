@@ -10,11 +10,11 @@ export class HomeService {
   constructor(private http: HttpClient) { }
 
   getBirds(): Observable<any> {
-    return this.http.get('http://localhost:3000/get-birds');
+    return this.http.get('https://gpzrlwl5yb.execute-api.us-east-1.amazonaws.com/dev/get-birds');
   }
 
   setBirds(data: any): Observable<any> {
-    return this.http.post('http://localhost:3000/set-birds', data);
+    return this.http.post('https://gpzrlwl5yb.execute-api.us-east-1.amazonaws.com/dev/set-birds', data);
   }
 
 }

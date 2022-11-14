@@ -10,6 +10,14 @@
       "StackName": "amplify-sbecapp-dev-224821",
       "StackId": "arn:aws:cloudformation:us-east-1:228065089798:stack/amplify-sbecapp-dev-224821/bbb62800-4072-11ed-8028-0a0f24060b61",
       "AmplifyAppId": "d30esmfpkbncjo"
+    },
+    "categories": {
+      "function": {
+        "sebecapplambda": {
+          "deploymentBucketName": "amplify-sbecapp-dev-224821-deployment",
+          "s3Key": "amplify-builds/sebecapplambda-686530494d752b6f7577-build.zip"
+        }
+      }
     }
   }
 }
